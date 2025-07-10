@@ -11,6 +11,7 @@ import { PlayerTable } from './PlayerTable';
 import { PlayerDetail } from './PlayerDetail';
 import { DashboardStats } from './DashboardStats';
 import { ExportButton } from './ExportButton';
+import { CsvUpload } from './CsvUpload';
 import { Search, Filter, TrendingUp } from 'lucide-react';
 
 interface Filters {
@@ -25,6 +26,7 @@ interface Filters {
 
 export const TransferDashboard: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<TransferPlayer | null>(null);
+  const [players, setPlayers] = useState<TransferPlayer[]>(transferPlayers);
   const [filters, setFilters] = useState<Filters>({
     position: 'All',
     conference: 'All',
@@ -44,7 +46,7 @@ export const TransferDashboard: React.FC = () => {
   };
 
   const filteredPlayers = useMemo(() => {
-    return transferPlayers.filter(player => {
+    return players.filter(player => {
       const playerHeight = convertHeightToInches(player.height);
       
       return (
@@ -61,7 +63,12 @@ export const TransferDashboard: React.FC = () => {
          player.previousTeam.toLowerCase().includes(filters.searchTerm.toLowerCase()))
       );
     });
-  }, [filters]);
+  }, [players, filters]);
+
+  const handleDataLoaded = (newPlayers: TransferPlayer[]) => {
+    setPlayers(newPlayers);
+    setSelectedPlayer(null);
+  };
 
   const clearFilters = () => {
     setFilters({
@@ -92,8 +99,11 @@ export const TransferDashboard: React.FC = () => {
           </p>
         </div>
 
+        {/* CSV Upload */}
+        <CsvUpload onDataLoaded={handleDataLoaded} />
+
         {/* Dashboard Stats */}
-        <DashboardStats players={filteredPlayers} totalPlayers={transferPlayers.length} />
+        <DashboardStats players={filteredPlayers} totalPlayers={players.length} />
 
         {/* Filters Section */}
         <Card>
@@ -205,7 +215,7 @@ export const TransferDashboard: React.FC = () => {
             <div className="flex justify-between items-center pt-4 border-t">
               <div className="flex items-center gap-2">
                 <Badge variant="secondary">
-                  {filteredPlayers.length} of {transferPlayers.length} players shown
+                  {filteredPlayers.length} of {players.length} players shown
                 </Badge>
               </div>
               <div className="flex gap-2">
