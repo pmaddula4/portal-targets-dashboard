@@ -65,7 +65,8 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ players }) => {
       player.efgPercent.toFixed(1),
       player.threePtPercent.toFixed(1),
       player.ftPercent.toFixed(1),
-      player.reboundingPercent.toFixed(1),
+      player.offensiveReboundingPercent.toFixed(1),
+      player.defensiveReboundingPercent.toFixed(1),
       player.blockPercent.toFixed(1),
       player.stealPercent.toFixed(1),
       `"${player.summary}"` // Wrap summary in quotes to handle commas

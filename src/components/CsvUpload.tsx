@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Upload, FileSpreadsheet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { TransferPlayer } from '@/data/transferData';
+import { archetypes, TransferPlayer } from '@/data/transferData';
+import teamSimilarityScores from '@/data/team_similarity_scores.json';
 
 interface CsvUploadProps {
   onDataLoaded: (data: TransferPlayer[]) => void;
@@ -33,30 +34,75 @@ export const CsvUpload = ({ onDataLoaded }: CsvUploadProps) => {
       skipEmptyLines: true,
       complete: (results) => {
         try {
-          const players = results.data.map((row: any, index: number) => ({
-            id: (index + 1).toString(),
-            name: row.Name || row.name || `Player ${index + 1}`,
-            position: row.Position || row.position || 'G',
-            height: row.Height || row.height || '6\'0"',
-            previousTeam: row['Previous Team'] || row.previousTeam || row['Previous_Team'] || 'Unknown',
-            conference: row.Conference || row.conference || 'Unknown',
-            offensiveRating: parseFloat(row['Offensive Rating'] || row.offensiveRating || row['Offensive_Rating'] || '100') || 100,
-            defensiveRating: parseFloat(row['Defensive Rating'] || row.defensiveRating || row['Defensive_Rating'] || '100') || 100,
-            usageRate: parseFloat(row['Usage Rate'] || row.usageRate || row['Usage_Rate'] || '20') || 20,
-            efgPercent: parseFloat(row['eFG%'] || row.efgPercent || row['eFG_Percent'] || '50') || 50,
-            threePtPercent: parseFloat(row['3PT%'] || row.threePtPercent || row['3PT_Percent'] || '35') || 35,
-            ftPercent: parseFloat(row['FT%'] || row.ftPercent || row['FT_Percent'] || '75') || 75,
-            reboundingPercent: parseFloat(row['Rebounding %'] || row.reboundingPercent || row['Rebounding_Percent'] || '10') || 10,
-            blockPercent: parseFloat(row['Block %'] || row.blockPercent || row['Block_Percent'] || '2') || 2,
-            stealPercent: parseFloat(row['Steal %'] || row.stealPercent || row['Steal_Percent'] || '2') || 2,
-            ppg: parseFloat(row.PPG || row.ppg || row['Points Per Game'] || '12') || 12,
-            rpg: parseFloat(row.RPG || row.rpg || row['Rebounds Per Game'] || '5') || 5,
-            apg: parseFloat(row.APG || row.apg || row['Assists Per Game'] || '3') || 3,
-            minutes: parseFloat(row.Minutes || row.minutes || row['Minutes Per Game'] || '25') || 25,
-            fitScore: parseFloat(row['Fit Score'] || row.fitScore || row['Fit_Score'] || '50') || 50,
-            archetype: row.Archetype || row.archetype || 'Balanced Player',
-            summary: row.Summary || row.summary || 'No summary available'
-          })) as TransferPlayer[];
+          const players = results.data.map((row: any, index: number) => {
+            const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
+            const scale = (val: number, min: number, max: number) => (clamp(val, min, max) - min) / (max - min);
+
+            const ppg = parseFloat(row.ppg);
+            const ts = parseFloat(row.ts);
+            const efg = parseFloat(row.efgPercent);
+            const threePtPct = parseFloat(row.threePtPercent);
+            const ftPct = parseFloat(row.ftPercent);
+            const apg = parseFloat(row.apg);
+            const astPct = parseFloat(row.ast_pct);
+            const toPct = parseFloat(row.to_pct);
+            const stealPct = parseFloat(row.stealPercent);
+            const blockPct = parseFloat(row.blockPercent);
+            const drtg = parseFloat(row.defensiveRating);
+            const rpg = parseFloat(row.rpg);
+            const orebPct = parseFloat(row.oreb_pct);
+            const drebPct = parseFloat(row.dreb_pct);
+            const bpm = parseFloat(row.bpm);
+            const obpm = parseFloat(row.obpm);
+            const dbpm = parseFloat(row.dbpm);
+            const ortg = parseFloat(row.offensiveRating);
+            const usage = parseFloat(row.usageRate);
+            const prpg = parseFloat(row.prpg)
+
+            const PES = (
+              0.10 * scale(ppg, 5, 20) +
+              0.25 * ((scale(efg, 40, 55) + scale(threePtPct, 15, 37.5) + scale(ftPct, 55, 80) + scale(ts, 45, 60)) / 4) +
+              0.15 * ((scale(apg, 1, 6) + scale(astPct, 5, 25) + (1 - scale(toPct, 10, 25))) / 3) +
+              0.15 * ((scale(stealPct, 1, 2.5) + scale(blockPct, 0.5, 3) + (1 - scale(drtg, 100, 115))) / 3) +
+              0.10 * ((scale(rpg, 1.5, 4) + scale(orebPct, 2, 10) + scale(drebPct, 7.5, 15)) / 3) +
+              0.25 * ((scale(bpm, -5, 1.5) + scale(obpm, -4, 1.5) + scale(dbpm, -2, 1) + scale(prpg, 0, 2)) / 4)
+            ) * 100;
+
+            const inferPosition = (archetype: string): string => {
+              if (archetype.toLowerCase().includes("pg")) return "PG";
+              if (archetype.toLowerCase().includes("combo")) return "G";
+              if (archetype.toLowerCase().includes("wing")) return "G/F";
+              if (archetype.toLowerCase().includes("pf/c")) return "F/C";
+              if (archetype.toLowerCase().includes("stretch")) return "PF";
+              if (archetype.toLowerCase().includes("c")) return "C";
+            };
+
+            return {
+              id: (index + 1).toString(),
+              name: row.Name || row.name || `Player ${index + 1}`,
+              height: row.Height || row.height || '6\'0"',
+              previousTeam: row['Previous Team'] || row.previousTeam || row['Previous_Team'] || 'Unknown',
+              conference: row.Conference || row.conference || 'Unknown',
+              offensiveRating: ortg,
+              defensiveRating: drtg,
+              usageRate: usage,
+              efgPercent: efg,
+              threePtPercent: threePtPct,
+              ftPercent: ftPct,
+              offensiveReboundingPercent: orebPct,
+              defensiveReboundingPercent: drebPct,
+              blockPercent: blockPct,
+              stealPercent: stealPct,
+              ppg: ppg,
+              rpg: rpg,
+              apg: apg,
+              minutes: parseFloat(row.Minutes || row.minutes || row['Minutes Per Game'] || '25') || 25,
+              fitScore: (PES * 0.7) + (teamSimilarityScores[row.previousTeam] * 0.3),
+              archetype: row.Archetype || row.archetype || 'Balanced Player',
+              position: inferPosition(row.archetype),
+              summary: row.Summary || row.summary || 'No summary available'
+            };
+          }) as TransferPlayer[];
 
           onDataLoaded(players);
           toast({

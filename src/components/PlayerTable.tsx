@@ -48,11 +48,10 @@ export const PlayerTable: React.FC<PlayerTableProps> = ({ players, selectedPlaye
     let variant: "default" | "secondary" | "destructive" | "outline" = "secondary";
     let icon = <Minus className="h-3 w-3" />;
     
-    // Define thresholds for different stats
     const thresholds: { [key: string]: { high: number; low: number } } = {
-      fitScore: { high: 85, low: 75 },
+      fitScore: { high: 77, low: 70 },
       offensiveRating: { high: 115, low: 105 },
-      defensiveRating: { high: 105, low: 95 }, // Lower is better for defensive rating
+      defensiveRating: { high: 105, low: 95 },
       efgPercent: { high: 55, low: 45 },
       threePtPercent: { high: 35, low: 30 },
       ftPercent: { high: 80, low: 70 },
@@ -64,7 +63,6 @@ export const PlayerTable: React.FC<PlayerTableProps> = ({ players, selectedPlaye
     const threshold = thresholds[field];
     if (threshold) {
       if (field === 'defensiveRating') {
-        // Lower defensive rating is better
         if (value <= threshold.high) {
           variant = "default";
           icon = <TrendingUp className="h-3 w-3" />;

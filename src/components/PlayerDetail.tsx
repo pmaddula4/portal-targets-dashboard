@@ -42,7 +42,8 @@ export const PlayerDetail: React.FC<PlayerDetailProps> = ({ player }) => {
     { label: 'eFG%', value: player.efgPercent, max: 70 },
     { label: '3P%', value: player.threePtPercent, max: 50 },
     { label: 'FT%', value: player.ftPercent, max: 100 },
-    { label: 'Rebounding %', value: player.reboundingPercent, max: 25 },
+    { label: 'Offensive Rebounding %', value: player.offensiveReboundingPercent, max: 25 },
+    { label: 'Defensive Rebounding %', value: player.defensiveReboundingPercent, max: 30},
     { label: 'Block %', value: player.blockPercent, max: 10 },
     { label: 'Steal %', value: player.stealPercent, max: 5 }
   ];
@@ -75,7 +76,7 @@ export const PlayerDetail: React.FC<PlayerDetailProps> = ({ player }) => {
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Fit Score</span>
               <Badge className="text-lg px-3 py-1">
-                {player.fitScore}/100
+                {player.fitScore.toFixed(2)}/100
               </Badge>
             </div>
             <Progress value={player.fitScore} className="h-2" />

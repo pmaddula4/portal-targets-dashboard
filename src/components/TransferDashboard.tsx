@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TransferPlayer, transferPlayers, positions, conferences, archetypes } from '@/data/transferData';
+import { TransferPlayer, positions, conferences, archetypes } from '@/data/transferData';
 import { PlayerTable } from './PlayerTable';
 import { PlayerDetail } from './PlayerDetail';
 import { DashboardStats } from './DashboardStats';
@@ -26,7 +26,7 @@ interface Filters {
 
 export const TransferDashboard: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<TransferPlayer | null>(null);
-  const [players, setPlayers] = useState<TransferPlayer[]>(transferPlayers);
+  const [players, setPlayers] = useState<TransferPlayer[]>([]);
   const [filters, setFilters] = useState<Filters>({
     position: 'All',
     conference: 'All',
