@@ -7,6 +7,7 @@ import { Upload, FileSpreadsheet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { archetypes, TransferPlayer } from '@/data/transferData';
 import teamSimilarityScores from '@/data/team_similarity_scores.json';
+import playerFitScores from "@/data/player_similarity_scores.json";
 
 interface CsvUploadProps {
   onDataLoaded: (data: TransferPlayer[]) => void;
@@ -102,7 +103,7 @@ export const CsvUpload = ({ onDataLoaded }: CsvUploadProps) => {
               rpg: rpg,
               apg: apg,
               minutes: parseFloat(row.Minutes || row.minutes || row['Minutes Per Game'] || '25') || 25,
-              fitScore: (PES * 0.7) + (teamSimilarityScores[row.previousTeam] * 0.3),
+              fitScore: (PES * 0.75) + (teamSimilarityScores[row.previousTeam] * 0.125) + (playerFitScores[row.name] * 0.125),
               archetype: row.Archetype || row.archetype || 'Balanced Player',
               position: inferPosition(row.archetype),
               summary: row.Summary || row.summary || 'No summary available'

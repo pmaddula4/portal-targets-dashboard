@@ -33,7 +33,7 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({ players, totalPl
     ? players.reduce((sum, player) => sum + player.fitScore, 0) / players.length 
     : 0;
 
-  const highFitPlayers = players.filter(player => player.fitScore >= 77).length;
+  const highFitPlayers = players.filter(player => player.fitScore >= 75).length;
   
   const topPositions = players.reduce((acc, player) => {
     acc[player.position] = (acc[player.position] || 0) + 1;
@@ -52,7 +52,7 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({ players, totalPl
     .sort(([,a], [,b]) => b - a)[0]?.[0] || 'N/A';
 
   const aiInsights = [
-    `${highFitPlayers} players have fit scores above 77, indicating strong alignment with team needs.`,
+    `${highFitPlayers} players have fit scores above 75, indicating strong alignment with team needs.`,
     `Most candidates are ${mostCommonPosition}s, suggesting depth in this position within the portal.`,
     `${conferenceFullNames[mostCommonConference] || mostCommonConference} leads in candidate count, showing strong talent pipeline from this conference.`,
     players.length > 0 ? `Average fit score of ${averageFitScore.toFixed(1)} indicates ${averageFitScore >= 70 ? 'high-quality' : averageFitScore >= 55 ? 'average' : 'low-quality'} candidate pool.` : ''
@@ -97,7 +97,7 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({ players, totalPl
         <CardContent>
           <div className="text-2xl font-bold">{highFitPlayers}</div>
           <p className="text-xs text-muted-foreground">
-            Fit score ≥ 77
+            Fit score ≥ 75
           </p>
         </CardContent>
       </Card>

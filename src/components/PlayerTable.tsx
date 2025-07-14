@@ -49,7 +49,7 @@ export const PlayerTable: React.FC<PlayerTableProps> = ({ players, selectedPlaye
     let icon = <Minus className="h-3 w-3" />;
     
     const thresholds: { [key: string]: { high: number; low: number } } = {
-      fitScore: { high: 77, low: 70 },
+      fitScore: { high: 75, low: 65 },
       offensiveRating: { high: 115, low: 105 },
       defensiveRating: { high: 105, low: 95 },
       efgPercent: { high: 55, low: 45 },
