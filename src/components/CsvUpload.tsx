@@ -50,7 +50,7 @@ export const CsvUpload = ({ onDataLoaded }: CsvUploadProps) => {
             const ftPct = parseFloat(row.ftPercent);
             const apg = parseFloat(row.apg);
             const astPct = parseFloat(row.ast_pct);
-            const toPct = parseFloat(row.to_pct);
+            const toPct = parseFloat(row.tov_pct);
             const stealPct = parseFloat(row.stealPercent);
             const blockPct = parseFloat(row.blockPercent);
             const drtg = parseFloat(row.defensiveRating);

@@ -14,7 +14,8 @@ df.rename(columns={
     "ast": "apg",
     "reb": "rpg",
     "role": "archetype",
-    "d-prpg": "def_prpg"
+    "d-prpg": "def_prpg",
+    "to_pct": "tov_pct",
     }, inplace=True)
 
 del df["del"]
