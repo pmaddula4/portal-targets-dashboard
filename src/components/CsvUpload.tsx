@@ -34,7 +34,12 @@ export const CsvUpload = ({ onDataLoaded }: CsvUploadProps) => {
       skipEmptyLines: true,
       complete: (results) => {
         try {
-          const players = results.data.map((row: any, index: number) => {
+          const players = results.data
+          .filter((row: any) => {
+            const team = row.previousTeam;
+            return !team.toLowerCase().includes('illinois');
+          })
+          .map((row: any, index: number) => {
             const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
             const scale = (val: number, min: number, max: number) => (clamp(val, min, max) - min) / (max - min);
 
@@ -110,7 +115,6 @@ export const CsvUpload = ({ onDataLoaded }: CsvUploadProps) => {
             description: `Imported ${players.length} players from CSV file.`,
           });
 
-          // Reset file input
           if (fileInputRef.current) {
             fileInputRef.current.value = '';
           }
@@ -167,7 +171,7 @@ export const CsvUpload = ({ onDataLoaded }: CsvUploadProps) => {
             Choose CSV File
           </Button>
           <div className="text-sm text-muted-foreground">
-            Supported columns: Name, Position, Height, Previous Team, Conference, Stats, Fit Score, Archetype
+            Supported columns: Name, Position, Height, Previous Team, Conference, Stats, Advanced Metrics, Archetype
           </div>
         </div>
       </CardContent>

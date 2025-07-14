@@ -31,8 +31,8 @@ export const TransferDashboard: React.FC = () => {
     position: 'All',
     conference: 'All',
     archetype: 'All',
-    heightRange: [66, 84], // 5'6" to 7'0" in inches
-    usageRange: [0, 35],
+    heightRange: [66, 88],
+    usageRange: [0, 40],
     fitScoreThreshold: 0,
     searchTerm: ''
   });
@@ -42,7 +42,7 @@ export const TransferDashboard: React.FC = () => {
     if (match) {
       return parseInt(match[1]) * 12 + parseInt(match[2]);
     }
-    return 72; // default 6'0"
+    return 72;
   };
 
   const filteredPlayers = useMemo(() => {
@@ -75,8 +75,8 @@ export const TransferDashboard: React.FC = () => {
       position: 'All',
       conference: 'All',
       archetype: 'All',
-      heightRange: [66, 84],
-      usageRange: [0, 35],
+      heightRange: [66, 88],
+      usageRange: [0, 40],
       fitScoreThreshold: 0,
       searchTerm: ''
     });
@@ -95,7 +95,7 @@ export const TransferDashboard: React.FC = () => {
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold text-foreground">Transfer Portal Dashboard</h1>
           <p className="text-lg text-muted-foreground">
-            Identify and prioritize basketball transfer targets based on statistical fit and team needs
+            Identify and prioritize basketball transfer targets based on statistical efficiency and team fit for the Illinois Men's Basketball Team
           </p>
         </div>
 
@@ -179,7 +179,7 @@ export const TransferDashboard: React.FC = () => {
                   value={filters.heightRange}
                   onValueChange={(value) => setFilters({ ...filters, heightRange: value as [number, number] })}
                   min={66}
-                  max={84}
+                  max={88}
                   step={1}
                   className="mt-2"
                 />
@@ -191,7 +191,7 @@ export const TransferDashboard: React.FC = () => {
                   value={filters.usageRange}
                   onValueChange={(value) => setFilters({ ...filters, usageRange: value as [number, number] })}
                   min={0}
-                  max={35}
+                  max={40}
                   step={0.5}
                   className="mt-2"
                 />

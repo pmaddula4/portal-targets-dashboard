@@ -9,6 +9,25 @@ interface DashboardStatsProps {
   totalPlayers: number;
 }
 
+const conferenceFullNames: Record<string, string> = {
+  AE: "America East",
+  ASun: "ASUN",
+  Amer: "AAC",
+  B10: "Big 10",
+  B12: "Big 12",
+  BE: "Big East",
+  BSky: "Big Sky",
+  BSouth: "Big South",
+  BW: "Big West",
+  Horz: "Horizon",
+  MWC: "Mountain West",
+  Pat: "Patriot",
+  SB: "Sun Belt",
+  SC: "SoCon",
+  Slnd: "Southland",
+  Sum: "Summit",
+};
+
 export const DashboardStats: React.FC<DashboardStatsProps> = ({ players, totalPlayers }) => {
   const averageFitScore = players.length > 0 
     ? players.reduce((sum, player) => sum + player.fitScore, 0) / players.length 
@@ -35,8 +54,8 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({ players, totalPl
   const aiInsights = [
     `${highFitPlayers} players have fit scores above 77, indicating strong alignment with team needs.`,
     `Most candidates are ${mostCommonPosition}s, suggesting depth in this position within the portal.`,
-    `${mostCommonConference} leads in candidate count, showing strong talent pipeline from this conference.`,
-    players.length > 0 ? `Average fit score of ${averageFitScore.toFixed(1)} indicates ${averageFitScore >= 80 ? 'high-quality' : averageFitScore >= 70 ? 'good' : 'mixed'} candidate pool.` : ''
+    `${conferenceFullNames[mostCommonConference] || mostCommonConference} leads in candidate count, showing strong talent pipeline from this conference.`,
+    players.length > 0 ? `Average fit score of ${averageFitScore.toFixed(1)} indicates ${averageFitScore >= 70 ? 'high-quality' : averageFitScore >= 55 ? 'average' : 'low-quality'} candidate pool.` : ''
   ].filter(Boolean);
 
   return (
@@ -58,13 +77,13 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({ players, totalPl
       {/* Average Fit Score */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Avg Fit Score</CardTitle>
+          <CardTitle className="text-sm font-medium">Average Fit Score</CardTitle>
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{averageFitScore.toFixed(1)}</div>
           <p className="text-xs text-muted-foreground">
-            {averageFitScore >= 80 ? 'Excellent' : averageFitScore >= 70 ? 'Good' : 'Average'} match quality
+            {averageFitScore >= 70 ? 'Good' : averageFitScore >= 55 ? 'Average' : 'Subpar'} match quality
           </p>
         </CardContent>
       </Card>

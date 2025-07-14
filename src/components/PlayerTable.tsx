@@ -123,6 +123,8 @@ export const PlayerTable: React.FC<PlayerTableProps> = ({ players, selectedPlaye
                 <SortableHeader field="ppg">PPG</SortableHeader>
                 <SortableHeader field="rpg">RPG</SortableHeader>
                 <SortableHeader field="apg">APG</SortableHeader>
+                <SortableHeader field="offensiveRating">Off. Rating</SortableHeader>
+                <SortableHeader field="defensiveRating">Def. Rating</SortableHeader>
                 <SortableHeader field="efgPercent">eFG%</SortableHeader>
                 <SortableHeader field="threePtPercent">3P%</SortableHeader>
               </TableRow>
@@ -155,6 +157,12 @@ export const PlayerTable: React.FC<PlayerTableProps> = ({ players, selectedPlaye
                   <TableCell>{player.ppg.toFixed(1)}</TableCell>
                   <TableCell>{player.rpg.toFixed(1)}</TableCell>
                   <TableCell>{player.apg.toFixed(1)}</TableCell>
+                  <TableCell>
+                    {getStatBadge(player.offensiveRating, 'offensiveRating')}
+                  </TableCell>
+                  <TableCell>
+                    {getStatBadge(player.defensiveRating, 'defensiveRating')}
+                  </TableCell>
                   <TableCell>
                     {getStatBadge(player.efgPercent, 'efgPercent', true)}
                   </TableCell>
