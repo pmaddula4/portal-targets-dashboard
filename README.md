@@ -3,7 +3,8 @@
 An interactive tool to analyze NCAA Basketball transfer portal players based on statistical fit to Illinois' playstyle.
 
 🔗 Live Demo: [View Dashboard](https://your-project-name.vercel.app)
-📄 [Download sample CSV](public/sample_transfer_data.csv)
+
+📄 [Download sample CSV](backend/data/cleaned_player_stats_full.csv)
 
 ## 🚀 Features
 - Upload CSVs
