@@ -6,7 +6,9 @@ An interactive tool to analyze NCAA Basketball transfer portal players based on 
 
 📄 [Download sample CSV](backend/data/cleaned_player_stats_full.csv)
 
-## 🚀 Features
+Scripts and data can be found in the backend directory.
+
+## Features
 - Upload CSVs
 - Fit score calculation using similarity models
 - Filters by position, conference, archetype, and more
