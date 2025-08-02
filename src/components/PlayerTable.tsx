@@ -119,6 +119,7 @@ export const PlayerTable: React.FC<PlayerTableProps> = ({ players, selectedPlaye
                 <SortableHeader field="position">Pos</SortableHeader>
                 <SortableHeader field="height">Height</SortableHeader>
                 <SortableHeader field="previousTeam">Previous Team</SortableHeader>
+                <SortableHeader field="committed">Committed</SortableHeader>
                 <SortableHeader field="fitScore">Fit Score</SortableHeader>
                 <SortableHeader field="ppg">PPG</SortableHeader>
                 <SortableHeader field="rpg">RPG</SortableHeader>
@@ -150,6 +151,11 @@ export const PlayerTable: React.FC<PlayerTableProps> = ({ players, selectedPlaye
                       <div className="font-medium">{player.previousTeam}</div>
                       <div className="text-sm text-muted-foreground">{player.conference}</div>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={player.committed === 'Yes' ? 'default' : 'secondary'}>
+                      {player.committed}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     {getStatBadge(player.fitScore, 'fitScore')}
