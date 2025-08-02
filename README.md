@@ -4,7 +4,7 @@ An interactive tool to analyze NCAA Basketball transfer portal players based on 
 
 🔗 Live Demo: [View Dashboard](https://portal-targets-dashboard.vercel.app)
 
-📄 [Download sample CSV](backend/data/cleaned_player_stats_full.csv)
+📄 [Download sample CSV](backend/data/cleaned_player_stats_full_committed.csv)
 
 Scripts and data can be found in the backend directory.
 
