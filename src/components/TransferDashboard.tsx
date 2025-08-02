@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TransferPlayer, positions, conferences, archetypes } from '@/data/transferData';
+import { TransferPlayer, positions, conferences, archetypes, commitmentStatus } from '@/data/transferData';
 import { PlayerTable } from './PlayerTable';
 import { PlayerDetail } from './PlayerDetail';
 import { DashboardStats } from './DashboardStats';
@@ -18,6 +18,7 @@ interface Filters {
   position: string;
   conference: string;
   archetype: string;
+  committed: string;
   heightRange: [number, number];
   usageRange: [number, number];
   fitScoreThreshold: number;
@@ -31,6 +32,7 @@ export const TransferDashboard: React.FC = () => {
     position: 'All',
     conference: 'All',
     archetype: 'All',
+    committed: 'All',
     heightRange: [66, 88],
     usageRange: [0, 40],
     fitScoreThreshold: 0,
@@ -53,6 +55,7 @@ export const TransferDashboard: React.FC = () => {
         (filters.position === 'All' || player.position === filters.position) &&
         (filters.conference === 'All' || player.conference === filters.conference) &&
         (filters.archetype === 'All' || player.archetype === filters.archetype) &&
+        (filters.committed === 'All' || player.committed === filters.committed) &&
         playerHeight >= filters.heightRange[0] &&
         playerHeight <= filters.heightRange[1] &&
         player.usageRate >= filters.usageRange[0] &&
@@ -75,6 +78,7 @@ export const TransferDashboard: React.FC = () => {
       position: 'All',
       conference: 'All',
       archetype: 'All',
+      committed: 'All',
       heightRange: [66, 88],
       usageRange: [0, 40],
       fitScoreThreshold: 0,
@@ -130,7 +134,7 @@ export const TransferDashboard: React.FC = () => {
             </div>
 
             {/* Filter Controls */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
               <div className="space-y-2">
                 <Label>Position</Label>
                 <Select value={filters.position} onValueChange={(value) => setFilters({ ...filters, position: value })}>
@@ -168,6 +172,20 @@ export const TransferDashboard: React.FC = () => {
                   <SelectContent>
                     {archetypes.map(arch => (
                       <SelectItem key={arch} value={arch}>{arch}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Committed</Label>
+                <Select value={filters.committed} onValueChange={(value) => setFilters({ ...filters, committed: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {commitmentStatus.map(status => (
+                      <SelectItem key={status} value={status}>{status}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

@@ -106,7 +106,8 @@ export const CsvUpload = ({ onDataLoaded }: CsvUploadProps) => {
               fitScore: (PES * 0.75) + (teamSimilarityScores[row.previousTeam] * 0.125) + (playerFitScores[row.name] * 0.125),
               archetype: row.Archetype || row.archetype || 'Balanced Player',
               position: inferPosition(row.archetype),
-              summary: row.Summary || row.summary || 'No summary available'
+              summary: row.Summary || row.summary || 'No summary available',
+              committed: row.Committed || row.committed || 'No'
             };
           }) as TransferPlayer[];
 
